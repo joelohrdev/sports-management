@@ -62,4 +62,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Season::class);
     }
+
+    /**
+     * @return HasMany<Division, $this>
+     */
+    public function divisions(): HasMany
+    {
+        return $this->hasMany(Division::class);
+    }
 }
