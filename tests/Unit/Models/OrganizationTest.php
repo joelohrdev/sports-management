@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Division;
 use App\Models\Location;
 use App\Models\Organization;
+use App\Models\Player;
 use App\Models\Season;
 use App\Models\User;
 
@@ -59,4 +60,13 @@ test('organization has many locations', function (): void {
     expect($organization->locations)
         ->toHaveCount(3)
         ->each(fn ($location) => $location->organization_id->toBe($organization->id));
+});
+
+test('organization has many players', function (): void {
+    $organization = Organization::factory()->create();
+    Player::factory()->count(3)->for($organization)->create();
+
+    expect($organization->players)
+        ->toHaveCount(3)
+        ->each(fn ($player) => $player->organization_id->toBe($organization->id));
 });

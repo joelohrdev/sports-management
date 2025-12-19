@@ -78,4 +78,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Location::class);
     }
+
+    /**
+     * @return HasMany<Player, $this>
+     */
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
+    }
 }
