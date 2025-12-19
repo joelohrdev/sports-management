@@ -86,4 +86,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Player::class);
     }
+
+    /**
+     * @return HasMany<Guardian, $this>
+     */
+    public function guardians(): HasMany
+    {
+        return $this->hasMany(Guardian::class);
+    }
 }

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\Bats;
-use App\Enums\Throws;
 use Carbon\CarbonInterface;
-use Database\Factories\PlayerFactory;
+use Database\Factories\GuardianFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,20 +15,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int $id
  * @property-read string $uuid
  * @property-read int $organization_id
+ * @property-read int $user_id
  * @property-read string $first_name
  * @property-read string $last_name
- * @property-read CarbonInterface $dob
- * @property-read int|null $graduation_year
- * @property-read Bats|null $bats
- * @property-read Throws|null $throws
- * @property-read string|null $notes
+ * @property-read string $email
+ * @property-read string $phone
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
- * @property-read CarbonInterface|null $deleted_at
  */
-final class Player extends Model
+final class Guardian extends Model
 {
-    /** @use HasFactory<PlayerFactory> */
+    /** @use HasFactory<GuardianFactory> */
     use HasFactory;
 
     /**
@@ -42,16 +37,13 @@ final class Player extends Model
             'id' => 'integer',
             'uuid' => 'string',
             'organization_id' => 'integer',
+            'user_id' => 'integer',
             'first_name' => 'string',
             'last_name' => 'string',
-            'dob' => 'date',
-            'graduation_year' => 'integer',
-            'bats' => Bats::class,
-            'throws' => Throws::class,
-            'notes' => 'string',
+            'email' => 'string',
+            'phone' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
         ];
     }
 
@@ -64,10 +56,18 @@ final class Player extends Model
     }
 
     /**
-     * @return BelongsToMany<Guardian, $this>
+     * @return BelongsTo<User, $this>
      */
-    public function guardians(): BelongsToMany
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(Guardian::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsToMany<Player, $this>
+     */
+    public function players(): BelongsToMany
+    {
+        return $this->belongsToMany(Player::class);
     }
 }
