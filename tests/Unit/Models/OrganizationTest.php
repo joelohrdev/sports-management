@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Division;
+use App\Models\Form;
 use App\Models\Guardian;
 use App\Models\Location;
 use App\Models\Organization;
@@ -89,4 +90,13 @@ test('has many teams', function (): void {
     expect($organization->teams)
         ->toHaveCount(3)
         ->each(fn ($team) => $team->organization_id->toBe($organization->id));
+});
+
+test('has many forms', function (): void {
+    $organization = Organization::factory()->create();
+    Form::factory()->count(3)->for($organization)->create();
+
+    expect($organization->forms)
+        ->toHaveCount(3)
+        ->each(fn ($form) => $form->organization_id->toBe($organization->id));
 });

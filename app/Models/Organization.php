@@ -102,4 +102,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Team::class);
     }
+
+    /**
+     * @return HasMany<Form, $this>
+     */
+    public function forms(): HasMany
+    {
+        return $this->hasMany(Form::class);
+    }
 }
