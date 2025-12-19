@@ -8,6 +8,7 @@ use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -60,5 +61,13 @@ final class User extends Authenticatable implements MustVerifyEmail
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @return HasMany<Organization, $this>
+     */
+    public function organizations(): HasMany
+    {
+        return $this->hasMany(Organization::class);
     }
 }
