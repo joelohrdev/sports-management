@@ -70,4 +70,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Division::class);
     }
+
+    /**
+     * @return HasMany<Location, $this>
+     */
+    public function locations(): HasMany
+    {
+        return $this->hasMany(Location::class);
+    }
 }

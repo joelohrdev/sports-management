@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Division;
+use App\Models\Location;
 use App\Models\Organization;
 use App\Models\Season;
 use App\Models\User;
@@ -49,4 +50,13 @@ test('organization has many divisions', function (): void {
     expect($organization->divisions)
         ->toHaveCount(3)
         ->each(fn ($division) => $division->organization_id->toBe($organization->id));
+});
+
+test('organization has many locations', function (): void {
+    $organization = Organization::factory()->create();
+    Location::factory()->count(3)->for($organization)->create();
+
+    expect($organization->locations)
+        ->toHaveCount(3)
+        ->each(fn ($location) => $location->organization_id->toBe($organization->id));
 });
