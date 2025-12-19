@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Organization;
+use App\Models\Season;
 use App\Models\User;
 
 test('to array', function (): void {
@@ -29,4 +30,13 @@ test('organization belongs to a user', function (): void {
     $organization = Organization::factory()->for($user)->create();
 
     expect($organization->user->is($user))->toBeTrue();
+});
+
+test('organization has many seasons', function (): void {
+    $organization = Organization::factory()->create();
+    Season::factory()->count(3)->for($organization)->create();
+
+    expect($organization->seasons)
+        ->toHaveCount(3)
+        ->each(fn ($season) => $season->organization_id->toBe($organization->id));
 });

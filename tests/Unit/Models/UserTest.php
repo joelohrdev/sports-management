@@ -22,7 +22,7 @@ test('to array', function (): void {
 
 test('user has many organizations', function (): void {
     $user = User::factory()->create();
-    $organizations = Organization::factory()->count(3)->for($user)->create();
+    Organization::factory()->count(3)->for($user)->create();
 
     expect($user->organizations)
         ->toHaveCount(3)
