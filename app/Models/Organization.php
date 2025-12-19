@@ -94,4 +94,12 @@ final class Organization extends Model
     {
         return $this->hasMany(Guardian::class);
     }
+
+    /**
+     * @return HasMany<Team, $this>
+     */
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
 }

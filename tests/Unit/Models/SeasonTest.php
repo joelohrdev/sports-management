@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Organization;
 use App\Models\Season;
+use App\Models\Team;
 
 test('to array', function (): void {
     $season = Season::factory()->create()->refresh();
@@ -29,4 +30,13 @@ test('belongs to organization', function (): void {
     $season = Season::factory()->for($organization)->create();
 
     expect($season->organization->is($organization))->toBeTrue();
+});
+
+test('season has many teams', function (): void {
+    $season = Season::factory()->create();
+    Team::factory()->count(3)->for($season)->create();
+
+    expect($season->teams)
+        ->toHaveCount(3)
+        ->each(fn ($team) => $team->season_id->toBe($season->id));
 });

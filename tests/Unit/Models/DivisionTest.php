@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Division;
 use App\Models\Organization;
+use App\Models\Team;
 
 test('to array', function (): void {
     $division = Division::factory()->create()->refresh();
@@ -20,9 +21,18 @@ test('to array', function (): void {
         ]);
 });
 
-test('division belongs to organization', function (): void {
+test('belongs to organization', function (): void {
     $organization = Organization::factory()->create();
     $division = Division::factory()->for($organization)->create();
 
     expect($division->organization->is($organization))->toBeTrue();
+});
+
+test('has many teams', function (): void {
+    $division = Division::factory()->create();
+    Team::factory()->count(3)->for($division)->create();
+
+    expect($division->teams)
+        ->toHaveCount(3)
+        ->each(fn ($team) => $team->division_id->toBe($division->id));
 });

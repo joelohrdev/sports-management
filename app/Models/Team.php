@@ -5,45 +5,44 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonInterface;
-use Database\Factories\SeasonFactory;
+use Database\Factories\TeamFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property-read int $id
  * @property-read string $uuid
  * @property-read int $organization_id
+ * @property-read int $season_id
+ * @property-read int $division_id
  * @property-read string $name
- * @property-read string $start_date
- * @property-read string $end_date
- * @property-read bool $active
- * @property-read bool $is_registration_open
+ * @property-read string $slug
+ * @property-read int $head_coach_id
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
- * @property-read CarbonInterface|null $deleted_at
  */
-final class Season extends Model
+final class Team extends Model
 {
-    /** @use HasFactory<SeasonFactory> */
-    use HasFactory, SoftDeletes;
+    /** @use HasFactory<TeamFactory> */
+    use HasFactory;
 
+    /**
+     * @return array<string, string>
+     */
     public function casts(): array
     {
         return [
             'id' => 'integer',
             'uuid' => 'string',
             'organization_id' => 'integer',
+            'season_id' => 'integer',
+            'division_id' => 'integer',
             'name' => 'string',
-            'start_date' => 'date',
-            'end_date' => 'date',
-            'active' => 'boolean',
-            'is_registration_open' => 'boolean',
+            'slug' => 'string',
+            'head_coach_id' => 'integer',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
-            'deleted_at' => 'datetime',
         ];
     }
 
@@ -56,10 +55,26 @@ final class Season extends Model
     }
 
     /**
-     * @return HasMany<Team, $this>
+     * @return BelongsTo<Season, $this>
      */
-    public function teams(): HasMany
+    public function season(): BelongsTo
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(Season::class);
+    }
+
+    /**
+     * @return BelongsTo<Division, $this>
+     */
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function headCoach(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'head_coach_id');
     }
 }

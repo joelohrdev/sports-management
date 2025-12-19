@@ -8,6 +8,7 @@ use App\Models\Location;
 use App\Models\Organization;
 use App\Models\Player;
 use App\Models\Season;
+use App\Models\Team;
 use App\Models\User;
 
 test('to array', function (): void {
@@ -29,14 +30,14 @@ test('to array', function (): void {
         ]);
 });
 
-test('organization belongs to a user', function (): void {
+test('belongs to a user', function (): void {
     $user = User::factory()->create();
     $organization = Organization::factory()->for($user)->create();
 
     expect($organization->user->is($user))->toBeTrue();
 });
 
-test('organization has many seasons', function (): void {
+test('has many seasons', function (): void {
     $organization = Organization::factory()->create();
     Season::factory()->count(3)->for($organization)->create();
 
@@ -45,7 +46,7 @@ test('organization has many seasons', function (): void {
         ->each(fn ($season) => $season->organization_id->toBe($organization->id));
 });
 
-test('organization has many divisions', function (): void {
+test('has many divisions', function (): void {
     $organization = Organization::factory()->create();
     Division::factory()->count(3)->for($organization)->create();
 
@@ -54,7 +55,7 @@ test('organization has many divisions', function (): void {
         ->each(fn ($division) => $division->organization_id->toBe($organization->id));
 });
 
-test('organization has many locations', function (): void {
+test('has many locations', function (): void {
     $organization = Organization::factory()->create();
     Location::factory()->count(3)->for($organization)->create();
 
@@ -63,7 +64,7 @@ test('organization has many locations', function (): void {
         ->each(fn ($location) => $location->organization_id->toBe($organization->id));
 });
 
-test('organization has many players', function (): void {
+test('has many players', function (): void {
     $organization = Organization::factory()->create();
     Player::factory()->count(3)->for($organization)->create();
 
@@ -72,11 +73,20 @@ test('organization has many players', function (): void {
         ->each(fn ($player) => $player->organization_id->toBe($organization->id));
 });
 
-test('organization has many guardians', function (): void {
+test('has many guardians', function (): void {
     $organization = Organization::factory()->create();
     Guardian::factory()->count(3)->for($organization)->create();
 
     expect($organization->guardians)
         ->toHaveCount(3)
         ->each(fn ($guardian) => $guardian->organization_id->toBe($organization->id));
+});
+
+test('has many teams', function (): void {
+    $organization = Organization::factory()->create();
+    Team::factory()->count(3)->for($organization)->create();
+
+    expect($organization->teams)
+        ->toHaveCount(3)
+        ->each(fn ($team) => $team->organization_id->toBe($organization->id));
 });
