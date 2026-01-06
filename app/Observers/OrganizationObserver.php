@@ -12,5 +12,6 @@ final class OrganizationObserver
     public function creating(Organization $organization): void
     {
         $organization->uuid = (string) Str::uuid();
+        $organization->slug = Str::slug($organization->name);
     }
 }

@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int $id
  * @property string $uuid
  * @property-read string $name
- * @property-read string $slug
+ * @property string $slug
  * @property-read int $owner_id
  * @property-read string|null $logo_path
  * @property-read string|null $primary_color
